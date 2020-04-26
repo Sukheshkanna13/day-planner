@@ -8,8 +8,8 @@ class timeBlock {
     this.start = aTime;
     this.end = aLaterTime;
     this.hasEvent = false
-    this.title = ''
-    this.description = ''
+    this.title = 'a'
+    this.description = 'a'
   }
 }
 
@@ -41,11 +41,14 @@ function timeBlockDisplayer(){
 function divMaker(thisTimeBlock){
   let myDiv = document.createElement('div')
   //Display it differently depending on whether it is or is not complete
-  myDiv.innerHTML = `<div id ="tb${thisTimeBlock.start}"class="card">
-    <h5 class="card-header">${thisTimeBlock.start} - ${thisTimeBlock.end}</h5>
-    <div class="card-body">
-      <p class="card-text">${thisTimeBlock.description}</p>
-    </div>
-    </div>`
+  myDiv.innerHTML = `<div class = "row">
+  <div class = "col-md-6 bg-light">
+    <h3>${thisTimeBlock.start} - ${thisTimeBlock.end}</h3>
+  </div>
+  <div class = "col-md-6 bg-info">
+    <h3>${thisTimeBlock.title}</h3>
+    <p>${thisTimeBlock.description}</p>
+  </div>
+</div>`
   return myDiv
 }
