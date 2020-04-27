@@ -29,17 +29,9 @@ timeBlockRefresher = setInterval(() => {
   updateHeader()
   timeBlockDisplayer()
   $("button").hide()
-  removeEventListeners()
   addEventListeners()
   }
   , 10000);
-
-
-function removeEventListeners(){
-  for (let i = 8; i < n + 8; i++) {
-    $("#col" + i).off('click')
-  }
-}
 
 function addEventListeners(){
   for (let i = 8; i < n + 8; i++) {
