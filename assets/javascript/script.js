@@ -38,6 +38,9 @@ function addEventListeners(){
     $("#col"+i).click(function () {
       console.log(`I love col ${i}!`)
     })
+    $("#col" + i).hover(function () {
+      console.log(`I merely like col ${i}.`)
+    })
   }
 }
 
@@ -92,8 +95,6 @@ function divMaker(thisTimeBlock){
   myCol.classList.add("col","bg-"+bgColor, 'py-2','border','rounded')
 
   myCol.id = `col${thisTimeBlock.start}`
-
-  //add a hover thing too later
 
   myRow.appendChild(myCol)
 
