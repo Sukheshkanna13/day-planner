@@ -73,9 +73,9 @@ function timeBlockStartup(){
 
 //Displaying the timeblocks
 function timeBlockDisplayer(){
-  $('timeblocks').html(``)
+  $('#timeblocks').html(``)
   for(let index in timeBlocks){
-    document.getElementById('timeblocks').append(
+    $('#timeblocks').append(
       divMaker(timeBlocks[index])
       )
   }
@@ -83,9 +83,9 @@ function timeBlockDisplayer(){
 
 //Making each timeblock for display
 function divMaker(thisTimeBlock){
-  let myRow = document.createElement("div") //create a div
+  let myRow = $("<div>") //create a div
 
-  myRow.classList.add("row") //make it a Bootstrap row
+  myRow.addClass("row") //make it a Bootstrap row
 
   //check if the current time block is in the past, the present, or the future
   let isPast = thisTimeBlock.start < parseInt(today.format('H'))
@@ -103,15 +103,13 @@ function divMaker(thisTimeBlock){
     bgColor = 'info'
   }
 
-  let myCol = document.createElement('div')//create another div
+  let myCol = $('<div>')//create another div
 
-  myCol.classList.add("col","bg-"+bgColor, 'py-2','border','rounded')
+  myCol.addClass(`col bg-${bgColor} py-2 border rounded`)
 
-  myCol.id = `col${thisTimeBlock.start}`
+  myCol.attr('id', `col${thisTimeBlock.start}`)
 
-  myRow.appendChild(myCol)
-
-  myCol.innerHTML = `<h3>${thisTimeBlock.start > 12 ? thisTimeBlock.start - 12 + 'pm' : thisTimeBlock.start + 'am'} - ${thisTimeBlock.end > 12 ? thisTimeBlock.end - 12 + 'pm' : thisTimeBlock.end + 'am'}</h3>\n <p id = "desc${thisTimeBlock.start}"></p>
+  myCol.html(`<h3>${thisTimeBlock.start > 12 ? thisTimeBlock.start - 12 + 'pm' : thisTimeBlock.start + 'am'} - ${thisTimeBlock.end > 12 ? thisTimeBlock.end - 12 + 'pm' : thisTimeBlock.end + 'am'}</h3>\n <p id = "desc${thisTimeBlock.start}"></p>
   
   <form>
   <div id = "form${thisTimeBlock.start}" class="form-group">
@@ -120,7 +118,9 @@ function divMaker(thisTimeBlock){
   </div>
   </form>
   
-  <button id = "saveBtn${thisTimeBlock.start}" class = "btn btn-primary float-right">Save</button>`
+  <button id = "saveBtn${thisTimeBlock.start}" class = "btn btn-primary float-right">Save</button>`) 
+
+  myRow.append(myCol)
 
   return myRow
 }
