@@ -6,7 +6,8 @@ DONE
 
 TO DO
 ======
-1. Submitting the element mouseover form
+1. Create non-bad click-in behavior
+2. Submitting the element mouseover form
 
 */
 
@@ -52,12 +53,16 @@ function addEventListeners(){
   for (let i = 8; i < n + 8; i++) {
     $("#col"+i).click(function () {
       console.log(`I love col ${i}!`)
+      $(this).toggleClass('m-1')
+      $("#" + `saveBtn${i}`).toggle()
+      $("#" + `form${i}`).toggle()
     })
     $("#col" + i).hover(function () {
-      $(this).toggleClass('m-1')
-      $("#"+`saveBtn${i}`).toggle()
-      $("#"+`form${i}`).toggle()
+      
       })
+    $("#saveBtn" + i).click(function () {
+      console.log(`Save me ${i}-Kenobi! You're my only hope!`)
+    })
   }
 }
 
