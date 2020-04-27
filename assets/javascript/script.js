@@ -31,7 +31,6 @@ timeBlockRefresher = setInterval(() => {
   $("button").hide()
   removeEventListeners()
   addEventListeners()
-    console.log("I love col 9!")
   }
   , 10000);
 
