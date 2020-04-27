@@ -3,11 +3,11 @@
 DONE
 ======
 1. Lots of refactoring with jQuery
+2. Create non-bad click-in behavior (basically did this accidentally but hey it works)
 
 TO DO
 ======
-1. Create non-bad click-in behavior
-2. Submitting the element mouseover form
+1. Submitting the element mouseover form
 
 */
 
