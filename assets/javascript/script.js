@@ -1,3 +1,12 @@
+//TO DO
+/*
+
+1. Lots of refactoring with jQuery
+
+2. Submitting the element mouseover form
+
+*/
+
 //Declaring and initializing global variables
 let timeBlocks = []
 
