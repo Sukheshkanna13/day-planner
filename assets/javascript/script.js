@@ -33,13 +33,13 @@ updateHeader()
 timeBlockDisplayer()
 addEventListeners()
 $("button").hide() //hide the save buttons on the timeblocks
-$('.form-group').hide()
+$('.form-group').hide() //hide the form fields
 
 
 //Setting an interval to update the page
 timeBlockRefresher = setInterval(() => {
   console.log('refreshed blocks and header')
-  updateHeader()
+  updateHeader() //redo all the stuff
   timeBlockDisplayer()
   $("button").hide()
   $('.form-group').hide()
@@ -47,6 +47,7 @@ timeBlockRefresher = setInterval(() => {
   }
   , 10000);
 
+//Adding unique event listeners to each timeblock via its col (Bootstrap column) element
 function addEventListeners(){
   for (let i = 8; i < n + 8; i++) {
     $("#col"+i).click(function () {
@@ -76,8 +77,8 @@ function timeBlockStartup(){
 
 //Displaying the timeblocks
 function timeBlockDisplayer(){
-  $('#timeblocks').html(``)
-  for(let index in timeBlocks){
+  $('#timeblocks').html(``) //clear the div
+  for(let index in timeBlocks){ //rewrite the div
     $('#timeblocks').append(
       divMaker(timeBlocks[index])
       )
