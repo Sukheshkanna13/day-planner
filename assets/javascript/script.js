@@ -50,7 +50,7 @@ function addEventListeners(){
 
 //Updating the header with the current date
 function updateHeader(){
-  document.getElementById("header").textContent = today.format('dddd LL')
+  $("#header").text(today.format('dddd LL'))
   // dddd LL = (long name of this weekday in this locale) (normal date format in this locale)
 }
 
@@ -64,7 +64,7 @@ function timeBlockStartup(){
 
 //Displaying the timeblocks
 function timeBlockDisplayer(){
-  document.getElementById('timeblocks').innerHTML = ``
+  $('timeblocks').html(``)
   for(let index in timeBlocks){
     document.getElementById('timeblocks').append(
       divMaker(timeBlocks[index])
@@ -74,7 +74,7 @@ function timeBlockDisplayer(){
 
 //Making each timeblock for display
 function divMaker(thisTimeBlock){
-  let myRow = document.createElement('div') //create a div
+  let myRow = document.createElement("div") //create a div
 
   myRow.classList.add("row") //make it a Bootstrap row
 
@@ -106,8 +106,8 @@ function divMaker(thisTimeBlock){
   
   <form>
   <div id = "form${thisTimeBlock.start}" class="form-group">
-    <label for="exampleFormControlInput1">Email address</label>
-    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+    <label for="desc">Event description</label>
+    <input type="text" class="form-control" id="desc" placeholder="Describe the event">
   </div>
   </form>
   
