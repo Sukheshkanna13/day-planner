@@ -39,11 +39,16 @@ function timeBlockDisplayer(){
 }
 
 function divMaker(thisTimeBlock){
-  let myDiv = document.createElement('div')
+  let myRow = document.createElement('div') //create a div
+
+  myRow.classList.add("row") //make it a Bootstrap row
+
+  //check if the current time block is in the past, the present, or the future
   let isPast = thisTimeBlock.start < parseInt(today.format('H'))
   let isPresent = thisTimeBlock.start == parseInt(today.format('H'))
   let isFuture = thisTimeBlock.start > parseInt(today.format('H'))
-  let bgColor
+  let bgColor //create bgColor so we can assign it in the following if statement
+
   if(isPast){
     bgColor = 'dark'
   }
@@ -53,10 +58,14 @@ function divMaker(thisTimeBlock){
   else{
     bgColor = 'info'
   }
-  myDiv.innerHTML = `<div class = "row">
-  <div class = "col bg-${bgColor}">
-    <h3>${thisTimeBlock.start > 12 ? thisTimeBlock.start - 12 +'pm' : thisTimeBlock.start +'am'} - ${thisTimeBlock.end > 12 ? thisTimeBlock.end - 12 +'pm' : thisTimeBlock.end +'am'}</h3>
-  </div>
-</div>`
-  return myDiv
+
+  let myCol = document.createElement('div')//create another div
+
+  myCol.classList.add("col","bg-"+bgColor)
+
+  myRow.appendChild(myCol)
+
+  myCol.innerHTML = `<h3>${thisTimeBlock.start > 12 ? thisTimeBlock.start - 12 + 'pm' : thisTimeBlock.start + 'am'} - ${thisTimeBlock.end > 12 ? thisTimeBlock.end - 12 + 'pm' : thisTimeBlock.end + 'am'}</h3>`
+  
+  return myRow
 }
