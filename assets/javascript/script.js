@@ -39,8 +39,9 @@ function addEventListeners(){
       console.log(`I love col ${i}!`)
     })
     $("#col" + i).hover(function () {
-      console.log(`I merely like col ${i}.`)
-    })
+      $(this).toggleClass('m-1')
+      $("#"+`saveBtn${i}`).toggle()
+      })
   }
 }
 
