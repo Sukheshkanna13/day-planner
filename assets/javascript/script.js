@@ -8,8 +8,8 @@ class timeBlock {
     this.start = aTime;
     this.end = aLaterTime;
     this.hasEvent = false
-    this.title = 'a'
-    this.description = 'a'
+    this.title = ''
+    this.description = ''
   }
 }
 
@@ -40,13 +40,22 @@ function timeBlockDisplayer(){
 
 function divMaker(thisTimeBlock){
   let myDiv = document.createElement('div')
+  let isPast = thisTimeBlock.start < parseInt(today.format('H'))
+  let isPresent = thisTimeBlock.start == parseInt(today.format('H'))
+  let isFuture = thisTimeBlock.start > parseInt(today.format('H'))
+  let bgColor
+  if(isPast){
+    bgColor = 'dark'
+  }
+  else if (isPresent){
+    bgColor = 'warning'
+  }
+  else{
+    bgColor = 'info'
+  }
   myDiv.innerHTML = `<div class = "row">
-  <div class = "col-md-6 bg-light">
-    <h3>${thisTimeBlock.start} - ${thisTimeBlock.end}</h3>
-  </div>
-  <div class = "col-md-6 bg-info">
-    <h3>${thisTimeBlock.title}</h3>
-    <p>${thisTimeBlock.description}</p>
+  <div class = "col bg-${bgColor}">
+    <h3>${thisTimeBlock.start > 12 ? thisTimeBlock.start - 12 +'pm' : thisTimeBlock.start +'am'} - ${thisTimeBlock.end > 12 ? thisTimeBlock.end - 12 +'pm' : thisTimeBlock.end +'am'}</h3>
   </div>
 </div>`
   return myDiv
