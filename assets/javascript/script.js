@@ -21,6 +21,7 @@ updateHeader()
 timeBlockDisplayer()
 addEventListeners()
 $("button").hide() //hide the save buttons on the timeblocks
+$('.form-group').hide()
 
 
 //Setting an interval to update the page
@@ -29,6 +30,7 @@ timeBlockRefresher = setInterval(() => {
   updateHeader()
   timeBlockDisplayer()
   $("button").hide()
+  $('.form-group').hide()
   addEventListeners()
   }
   , 10000);
@@ -41,6 +43,7 @@ function addEventListeners(){
     $("#col" + i).hover(function () {
       $(this).toggleClass('m-1')
       $("#"+`saveBtn${i}`).toggle()
+      $("#"+`form${i}`).toggle()
       })
   }
 }
@@ -99,7 +102,16 @@ function divMaker(thisTimeBlock){
 
   myRow.appendChild(myCol)
 
-  myCol.innerHTML = `<h3>${thisTimeBlock.start > 12 ? thisTimeBlock.start - 12 + 'pm' : thisTimeBlock.start + 'am'} - ${thisTimeBlock.end > 12 ? thisTimeBlock.end - 12 + 'pm' : thisTimeBlock.end + 'am'}</h3>\n <p id = "desc${thisTimeBlock.start}"></p>\n <button id = "saveBtn${thisTimeBlock.start}" class = "btn btn-primary float-right">Save</button>`
+  myCol.innerHTML = `<h3>${thisTimeBlock.start > 12 ? thisTimeBlock.start - 12 + 'pm' : thisTimeBlock.start + 'am'} - ${thisTimeBlock.end > 12 ? thisTimeBlock.end - 12 + 'pm' : thisTimeBlock.end + 'am'}</h3>\n <p id = "desc${thisTimeBlock.start}"></p>
+  
+  <form>
+  <div id = "form${thisTimeBlock.start}" class="form-group">
+    <label for="exampleFormControlInput1">Email address</label>
+    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+  </div>
+  </form>
+  
+  <button id = "saveBtn${thisTimeBlock.start}" class = "btn btn-primary float-right">Save</button>`
 
   return myRow
 }
