@@ -1,9 +1,12 @@
-//TO DO
 /*
 
+DONE
+======
 1. Lots of refactoring with jQuery
 
-2. Submitting the element mouseover form
+TO DO
+======
+1. Submitting the element mouseover form
 
 */
 
