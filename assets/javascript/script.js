@@ -13,15 +13,29 @@ class timeBlock {
   }
 }
 
-updateHeader()
+//Running startup
 timeBlockStartup()
+updateHeader()
 timeBlockDisplayer()
+$("button").hide() //hide the save buttons on the timeblocks
 
+
+//Setting an interval to update the page
+timeBlockRefresher = setInterval(() => {
+  console.log('refreshed blocks and header')
+  updateHeader()
+  timeBlockDisplayer()
+  $("button").hide()
+}, 10000);
+
+
+//Updating the header with the current date
 function updateHeader(){
   document.getElementById("header").textContent = today.format('dddd LL')
   // dddd LL = (long name of this weekday in this locale) (normal date format in this locale)
 }
 
+//Creating the list of timeblocks
 function timeBlockStartup(){
   let n = 9
   for(let i = 8; i < n+8; i++){
@@ -30,7 +44,9 @@ function timeBlockStartup(){
   }
 }
 
+//Displaying the timeblocks
 function timeBlockDisplayer(){
+  document.getElementById('timeblocks').innerHTML = ``
   for(let index in timeBlocks){
     document.getElementById('timeblocks').append(
       divMaker(timeBlocks[index])
@@ -38,6 +54,7 @@ function timeBlockDisplayer(){
   }
 }
 
+//Making each timeblock for display
 function divMaker(thisTimeBlock){
   let myRow = document.createElement('div') //create a div
 
@@ -61,11 +78,19 @@ function divMaker(thisTimeBlock){
 
   let myCol = document.createElement('div')//create another div
 
-  myCol.classList.add("col","bg-"+bgColor)
+  myCol.classList.add("col","bg-"+bgColor, 'py-2','border','rounded')
+
+  myCol.id = `col${thisTimeBlock.start}`
+
+  $('#'+myCol.id).on("click",function(event){
+    //write some stuff here
+  })
+
+  //add a hover thing too later
 
   myRow.appendChild(myCol)
 
-  myCol.innerHTML = `<h3>${thisTimeBlock.start > 12 ? thisTimeBlock.start - 12 + 'pm' : thisTimeBlock.start + 'am'} - ${thisTimeBlock.end > 12 ? thisTimeBlock.end - 12 + 'pm' : thisTimeBlock.end + 'am'}</h3>`
-  
+  myCol.innerHTML = `<h3>${thisTimeBlock.start > 12 ? thisTimeBlock.start - 12 + 'pm' : thisTimeBlock.start + 'am'} - ${thisTimeBlock.end > 12 ? thisTimeBlock.end - 12 + 'pm' : thisTimeBlock.end + 'am'}</h3>\n <p id = "desc${thisTimeBlock.start}"></p>\n <button id = "saveBtn${thisTimeBlock.start}" class = "btn btn-primary float-right">Save</button>`
+
   return myRow
 }
