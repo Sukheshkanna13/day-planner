@@ -3,6 +3,8 @@ let timeBlocks = []
 
 const today = moment()
 
+let n = 9 //# of timeblocks to create
+
 class timeBlock {
   constructor(aTime,aLaterTime){
     this.start = aTime;
@@ -17,6 +19,7 @@ class timeBlock {
 timeBlockStartup()
 updateHeader()
 timeBlockDisplayer()
+addEventListeners()
 $("button").hide() //hide the save buttons on the timeblocks
 
 
@@ -26,8 +29,26 @@ timeBlockRefresher = setInterval(() => {
   updateHeader()
   timeBlockDisplayer()
   $("button").hide()
-}, 10000);
+  removeEventListeners()
+  addEventListeners()
+    console.log("I love col 9!")
+  }
+  , 10000);
 
+
+function removeEventListeners(){
+  for (let i = 8; i < n + 8; i++) {
+    $("#col" + i).off('click')
+  }
+}
+
+function addEventListeners(){
+  for (let i = 8; i < n + 8; i++) {
+    $("#col"+i).click(function () {
+      console.log(`I love col ${i}!`)
+    })
+  }
+}
 
 //Updating the header with the current date
 function updateHeader(){
@@ -37,7 +58,6 @@ function updateHeader(){
 
 //Creating the list of timeblocks
 function timeBlockStartup(){
-  let n = 9
   for(let i = 8; i < n+8; i++){
     newTimeBlock = new timeBlock(i,i+1)
     timeBlocks.push(newTimeBlock)
@@ -81,10 +101,6 @@ function divMaker(thisTimeBlock){
   myCol.classList.add("col","bg-"+bgColor, 'py-2','border','rounded')
 
   myCol.id = `col${thisTimeBlock.start}`
-
-  $('#'+myCol.id).on("click",function(event){
-    //write some stuff here
-  })
 
   //add a hover thing too later
 
