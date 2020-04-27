@@ -7,7 +7,8 @@ DONE
 
 TO DO
 ======
-1. Submitting the element mouseover form
+1. Rework clickedIn
+2. Submitting the element mouseover form
 
 */
 
@@ -17,6 +18,8 @@ let timeBlocks = []
 const today = moment()
 
 let n = 9 //# of timeblocks to create
+
+let clickedIn = false
 
 class timeBlock {
   constructor(aTime,aLaterTime){
@@ -41,17 +44,25 @@ $('.form-group').hide() //hide the form fields
 timeBlockRefresher = setInterval(() => {
   console.log('refreshed blocks and header')
   updateHeader() //redo all the stuff
-  timeBlockDisplayer()
-  $("button").hide()
-  $('.form-group').hide()
-  addEventListeners()
+  if(!clickedIn){
+    timeBlockDisplayer()
+    $("button").hide()
+    $('.form-group').hide()
+    addEventListeners()
   }
-  , 10000);
+  }
+  , 1000);
 
 //Adding unique event listeners to each timeblock via its col (Bootstrap column) element
 function addEventListeners(){
   for (let i = 8; i < n + 8; i++) {
-    $("#col"+i).click(function () {
+    $("#hText"+i).click(function () {
+      if(clickedIn){
+        clickedIn = false //need to rework this
+      }else{
+        clickedIn = true
+      }
+      console.log(clickedIn)
       console.log(`I love col ${i}!`)
       $(this).toggleClass('m-1')
       $("#" + `saveBtn${i}`).toggle()
@@ -62,6 +73,7 @@ function addEventListeners(){
       })
     $("#saveBtn" + i).click(function () {
       console.log(`Save me ${i}-Kenobi! You're my only hope!`)
+      console.log($("#" + `form${i}`))
     })
   }
 }
@@ -118,7 +130,7 @@ function divMaker(thisTimeBlock){
 
   myCol.attr('id', `col${thisTimeBlock.start}`)
 
-  myCol.html(`<h3>${thisTimeBlock.start > 12 ? thisTimeBlock.start - 12 + 'pm' : thisTimeBlock.start + 'am'} - ${thisTimeBlock.end > 12 ? thisTimeBlock.end - 12 + 'pm' : thisTimeBlock.end + 'am'}</h3>\n <p id = "desc${thisTimeBlock.start}"></p>
+  myCol.html(`<h3 id = "hText${thisTimeBlock.start}">${thisTimeBlock.start > 12 ? thisTimeBlock.start - 12 + 'pm' : thisTimeBlock.start + 'am'} - ${thisTimeBlock.end > 12 ? thisTimeBlock.end - 12 + 'pm' : thisTimeBlock.end + 'am'}</h3>\n <p id = "desc${thisTimeBlock.start}"></p>
   
   <form>
   <div id = "form${thisTimeBlock.start}" class="form-group">
