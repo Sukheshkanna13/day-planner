@@ -40,7 +40,6 @@ function timeBlockDisplayer(){
 
 function divMaker(thisTimeBlock){
   let myDiv = document.createElement('div')
-  //Display it differently depending on whether it is or is not complete
   myDiv.innerHTML = `<div class = "row">
   <div class = "col-md-6 bg-light">
     <h3>${thisTimeBlock.start} - ${thisTimeBlock.end}</h3>
