@@ -26,8 +26,7 @@ const createAllTimeBlocks = (timesArr) => {
 // a col-1 for the time
 // with the hour class
 // a col-10 for the main body of the timeblock
-// with the past, present, or future classes
-// based on whether it is in the past, present, or future
+// using updateTimeBlockColor to assign it a color
 // with a <p> tag for the description
 // with a <textarea> to type in text
 // and a col-1 for the save button
@@ -43,7 +42,11 @@ updateHeaderWithDay()
 }
 
 const updateTimeBlockColor = (aTimeBlock) => {
-
+// if the timeblock has a past, present, or future class, remove it
+// if it is in the past now, add the past class
+// if it is in the present now, add the present class
+// if it is in the future now, add the future class
+// return the timeblock
 }
 
 const saveCurrentTimeBlockContent = () => {
