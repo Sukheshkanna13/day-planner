@@ -24,6 +24,14 @@ const createAllTimeBlocks = () => {
 // and a col-1 for the save button
 }
 
+const updateAllTimeBlocks = () => {
+
+}
+
+const saveCurrentTimeBlockContent = () => {
+
+}
+
 //run some functions
 
 updateHeaderWithDay()
