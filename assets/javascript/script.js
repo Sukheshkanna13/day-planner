@@ -31,31 +31,26 @@ for (let index in myArr){
 // a col-1 for the time label
 // with the hour class
   let timeLabel = $('<div></div>')
-  timeLabel.addClass('col-1 hour')
+  timeLabel.addClass('col-1 hour text-right')
 // and a <p> tag containing the time, with P.M. or A.M. as appropriate
-  timeLabel.append($(`<p>${convert24Hto12H(timeStart)[0]}${convert24Hto12H(timeStart)[1]? 'PM' : 'AM'}</p>`))
+  timeLabel.append($(`<p class = "mt-3">${convert24Hto12H(timeStart)[0]}${convert24Hto12H(timeStart)[1]? 'PM' : 'AM'}</p>`))
 // a col-10 for the main body of the timeblock
   let mainBody = $('<div></div>')
 // give the mainbody a data attribute indicating what hour it starts at
   mainBody.data('start', timeStart)
   console.log(`added data to block main body ${timeStart}: ${mainBody.data('start')}, type ${typeof (mainBody.data('start'))}`)
-  mainBody.addClass('col-10')
+  mainBody.addClass('col-10 pl-0')
 // use updateTimeBlockColor to assign it a color
   console.log(`updating color of block ${timeStart}`)
   mainBody = updateTimeBlockColor(mainBody)
-// with a <p> tag for the description
-  let myDesc = $('<p></p>')
-  myDesc.addClass('description')
-  myDesc.attr('id',`desc${timeStart}`)
-  mainBody.append(myDesc)
 // with a <textarea> to type in text
-  mainBody.append($(`<textarea id = "text${timeStart}"></textarea>`))
+  mainBody.append($(`<textarea id = "text${timeStart}" class = "h-100 w-100 description" ></textarea>`))
 // and a col-1 for the save button
   mySaveArea = $('<div></div>')
-  mySaveSpan = $('<span></span>')
-  mySaveSpan.addClass("fas fa-save align-middle")
+  mySaveSpan = $('<i></i>')
+  mySaveSpan.addClass("fas fa-save align-self-center ml-4")
   mySaveArea.append(mySaveSpan)
-  mySaveArea.addClass('col-1 saveBtn text-center')
+  mySaveArea.addClass('col-1 saveBtn d-flex h-100')
 // append them to the timeBlock
   newTimeBlock.append(timeLabel)
   newTimeBlock.append(mainBody)
