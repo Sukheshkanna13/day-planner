@@ -4,4 +4,4 @@ A day planner application, built for the UC Irvine Coding Boot Camp to gain expe
 
 Application deployed at: https://maximilliancharlemagne.github.io/day-planner/
 
-![a screenshot of a day planner](./assets/images/day-planner.PNG)
+![a screenshot of a day planner](./assets/images/day-planner.png)
