@@ -77,6 +77,11 @@ updateHeaderWithDay()
 // but we're just gonna re-create all the timeblocks from scratch
 $('.container').html('')
 createAllTimeBlocks(timesArr)
+//re-add the event listeners
+  $('.saveBtn').click(event => {
+    saveCurrentTimeBlockContent(event)
+    console.log('save button pressed')
+  })
 }
 
 const updateTimeBlockColor = (aTimeBlockBody) => {
@@ -115,4 +120,9 @@ createAllTimeBlocks(timesArr)
 //add an event listener to the save button areas
 $('.saveBtn').click(event => {
   saveCurrentTimeBlockContent(event)
+  console.log('save button pressed')
 })
+
+//set an interval to update the page
+
+setInterval(updateEverything,10000)
