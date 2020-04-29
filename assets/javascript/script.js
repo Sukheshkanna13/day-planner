@@ -125,4 +125,7 @@ $('.saveBtn').click(event => {
 
 //set an interval to update the page
 
-setInterval(updateEverything,10000)
+setInterval(updateEverything,60000) //needs to be rare, it will clear any text that hasn't been saved
+//could fix later with a textarea.val() call in updateEverything?
+//meh
+// stable enough
