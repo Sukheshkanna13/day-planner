@@ -1,154 +1,131 @@
-/*
+//create a moment.js instance
 
-DONE
-======
-1. Lots of refactoring with jQuery
-2. Create non-bad click-in behavior (basically did this accidentally but hey it works)
-3. reworked clickedIn- timeBlockDisplayer will not be re-run if any boxes are currently open
-4. Submitting the element mouseover form
-5. Change <p> color to white when background is dark
-6. Rework clickedIn again- not clearing when all elements clicked out
+const ourMomentInstance = moment()
 
+//define some global variables
+let timesArr = [9,10,11,12,13,14,15,16,17]
 
-TO DO
-======
-1. Rebuild the entire application, but better.
+//define some functions
 
-*/
-
-//Declaring and initializing global variables
-let timeBlocks = []
-
-const today = moment()
-
-let n = 9 //# of timeblocks to create
-
-let clickedIn = [] //which timeblocks are we clicked into?
-
-class timeBlock {
-  constructor(aTime,aLaterTime){
-    this.start = aTime;
-    this.end = aLaterTime;
-  }
+const updateHeaderWithDay = () => {
+  $('#currentDay').text(ourMomentInstance.format('dddd, MMMM Do'))
 }
 
-//Running startup
-timeBlockStartup()
-updateHeader()
-timeBlockDisplayer()
-addEventListeners()
-$("button").hide() //hide the save buttons on the timeblocks
-$('.form-group').hide() //hide the form fields
-
-
-//Setting an interval to update the page
-timeBlockRefresher = setInterval(() => {
-  console.log('refreshing header')
-  updateHeader() //redo all the stuff
-  if(!(clickedIn.includes(true))){ //if none of the blocks are clicked in
-    console.log('refreshing blocks')
-    timeBlockDisplayer()
-    $("button").hide()
-    $('.form-group').hide()
-    addEventListeners()
-  }
-  }
-  , 1000);
-
-//Adding unique event listeners to each timeblock via its col (Bootstrap column) element
-function addEventListeners(){
-  for (let i = 8; i < n + 8; i++) {
-    $("#hText"+i).click(function () {
-      if(clickedIn[i-8]){
-        clickedIn[i-8] = false //need to rework this
-      }else{
-        clickedIn[i-8] = true
-      }
-      console.log(`I love col ${i}!`)
-      $(this).toggleClass('m-1')
-      $("#" + `saveBtn${i}`).toggle()
-      $("#" + `form${i}`).toggle()
-    })
-    $("#saveBtn" + i).click(function () {
-      console.log(`Save me ${i}-Kenobi! You're my only hope!`)
-      console.log(`formDesc${i}`)
-      console.log($(`#formDesc${i}`).val())
-      $(`#desc${i}`).text($(`#formDesc${i}`).val())
-      localStorage.setItem(`blockDesc${i}`, $(`#formDesc${i}`).val())
-    })
-  }
+const convert24Hto12H = (aNum) => {
+  return aNum > 12? [aNum - 12, true] : [aNum, false]
 }
 
-//Updating the header with the current date
-function updateHeader(){
-  $("#header").text(today.format('dddd LL'))
-  // dddd LL = (long name of this weekday in this locale) (normal date format in this locale)
+const convert12Hto24H = (aNum,afterNoon) => {
+  return afterNoon? aNum + 12 : aNum
 }
 
-//Creating the list of timeblocks
-function timeBlockStartup(){
-  for(let i = 8; i < n+8; i++){
-    let newTimeBlock = new timeBlock(i,i+1)
-    timeBlocks.push(newTimeBlock)
-    clickedIn.push(false)
+const createAllTimeBlocks = (myArr) => {
+// create some # of time blocks, from X time to Y time
+for (let index in myArr){
+  let timeStart = myArr[index]
+  console.log(`building timeBlock ${timeStart}`)
+  let newTimeBlock = $('<div></div>')
+// give each timeblock the row and timeblock classes
+  newTimeBlock.addClass("row timeblock")
+// create 3 cols in the time block
+// a col-1 for the time label
+// with the hour class
+  let timeLabel = $('<div></div>')
+  timeLabel.addClass('col-1 hour text-right')
+// and a <p> tag containing the time, with P.M. or A.M. as appropriate
+  timeLabel.append($(`<p class = "mt-3">${convert24Hto12H(timeStart)[0]}${convert24Hto12H(timeStart)[1]? 'PM' : 'AM'}</p>`))
+// a col-10 for the main body of the timeblock
+  let mainBody = $('<div></div>')
+// give the mainbody a data attribute indicating what hour it starts at
+  mainBody.data('start', timeStart)
+  // console.log(`added data to block main body ${timeStart}: ${mainBody.data('start')}, type ${typeof (mainBody.data('start'))}`)
+  mainBody.addClass('col-10 pl-0')
+// use updateTimeBlockColor to assign it a color
+  // console.log(`updating color of block ${timeStart}`)
+  mainBody = updateTimeBlockColor(mainBody)
+// with a <textarea> to type in text
+  mainBody.append($(`<textarea id = "text${timeStart}" class = "h-100 w-100 description" ></textarea>`))
+// and a col-1 for the save button
+  mySaveArea = $('<div></div>')
+  mySaveSpan = $('<i></i>')
+  mySaveSpan.addClass("fas fa-save align-self-center ml-4")
+  mySaveArea.append(mySaveSpan)
+  mySaveArea.addClass('col-1 saveBtn d-flex h-100')
+  mySaveArea.attr('id',`save${timeStart}`)
+// append them to the timeBlock
+  newTimeBlock.append(timeLabel)
+  newTimeBlock.append(mainBody)
+  newTimeBlock.append(mySaveArea)
+// append the new timeBlock to the container
+  $('.container').append(newTimeBlock)
+// if there's already a value in localStorage for the textarea, set it to that
+  console.log(localStorage.getItem(`savedText${timeStart}`))
+  if (localStorage.getItem(`savedText${timeStart}`)) {
+    $(`#text${timeStart}`).text(localStorage.getItem(`savedText${timeStart}`))
   }
+} //end of for loop
+} //end of function
+
+const updateEverything = () => {
+// this function will be placed inside a setInterval
+// update the day
+updateHeaderWithDay()
+// update each timeblock, depending on whether it is now in the past, present, or future
+// use jQuery to get the list of timeblocks
+// use.map() to apply an updater function to each timeblock
+// would be a wonderful way to do this if I understood jQuery lists or jQuery .map()
+// but we're just gonna re-create all the timeblocks from scratch
+$('.container').html('')
+createAllTimeBlocks(timesArr)
+//re-add the event listeners
+  $('.saveBtn').click(event => {
+    saveCurrentTimeBlockContent(event)
+    console.log('save button pressed')
+  })
 }
 
-//Displaying the timeblocks
-function timeBlockDisplayer(){
-  $('#timeblocks').html(``) //clear the div
-  for(let index in timeBlocks){ //rewrite the div
-    $('#timeblocks').append(
-      divMaker(timeBlocks[index])
-      )
+const updateTimeBlockColor = (aTimeBlockBody) => {
+// if the timeblock has a past, present, or future class, remove it
+  aTimeBlockBody.removeClass("past present future") //I think this has no effect if the class isn't there. The code works so ¯\_( ツ )_/¯
+  // console.log('removed classes')
+// if it is in the past now, add the past class
+  if (aTimeBlockBody.data('start') < parseInt(ourMomentInstance.format('H'))){
+    aTimeBlockBody.addClass("past")
   }
+// if it is in the present now, add the present class
+  else if (aTimeBlockBody.data('start') == parseInt(ourMomentInstance.format('H'))){ //weak typing == is intentional here
+    aTimeBlockBody.addClass("present")
+  }
+// if it is in the future now, add the future class
+  else if (aTimeBlockBody.data('start') > parseInt(ourMomentInstance.format('H'))){
+    aTimeBlockBody.addClass("future")
+  }
+// return the timeblock
+  return aTimeBlockBody
 }
 
-//Making each timeblock for display
-function divMaker(thisTimeBlock){
-  let myRow = $("<div>") //create a div
-
-  myRow.addClass("row") //make it a Bootstrap row
-
-  //check if the current time block is in the past, the present, or the future
-  let isPast = thisTimeBlock.start < parseInt(today.format('H'))
-  let isPresent = thisTimeBlock.start == parseInt(today.format('H'))
-  let isFuture = thisTimeBlock.start > parseInt(today.format('H'))
-  let bgColor //create bgColor so we can assign it in the following if statement
-  let textColor
-
-  if(isPast){
-    bgColor = 'bg-dark'
-    textColor = 'text-white'
-  }
-  else if (isPresent){
-    bgColor = 'bg-warning'
-    textColor = 'text-black'
-  }
-  else{
-    bgColor = 'bg-info'
-    textColor = 'text-black'
-  }
-
-  let myCol = $('<div>')//create another div
-
-  myCol.addClass(`col ${textColor} ${bgColor} py-4 border rounded`)
-
-  myCol.attr('id', `col${thisTimeBlock.start}`)
-
-  myCol.html(`<h3 class = "${bgColor == 'bg-dark' ? 'bg-dark' : ''}" id = "hText${thisTimeBlock.start}">${thisTimeBlock.start > 12 ? thisTimeBlock.start - 12 + 'pm' : thisTimeBlock.start + 'am'} - ${thisTimeBlock.end > 12 ? thisTimeBlock.end - 12 + 'pm' : thisTimeBlock.end + 'am'}</h3>\n <p id = "desc${thisTimeBlock.start}">${localStorage.getItem(`blockDesc${thisTimeBlock.start}`) ? localStorage.getItem(`blockDesc${thisTimeBlock.start}`) : ''}</p>
-  
-  <form>
-  <div id = "form${thisTimeBlock.start}" class="form-group">
-    <label for="desc${thisTimeBlock.start}">     </label>
-    <!-- label is used to add some spacing below the h3 -->
-    <input type="text" class="form-control" name = "formDesc${thisTimeBlock.start}" id="formDesc${thisTimeBlock.start}" placeholder="Describe the event">
-  </div>
-  </form>
-  
-  <button id = "saveBtn${thisTimeBlock.start}" class = "btn btn-primary float-right">Save</button>`) 
-
-  myRow.append(myCol)
-
-  return myRow
+const saveCurrentTimeBlockContent = (anEvent) => {
+  // console.log("Saving current timeblock content...")
+  currentTimeBlock = anEvent.currentTarget.id.slice(4)
+  // console.log(currentTimeBlock)
+// save the value entered into the current timeblock's textarea in localStorage
+  localStorage.setItem(`savedText${currentTimeBlock}`,$(`#text${currentTimeBlock}`).val())
 }
+
+//run some functions
+
+updateHeaderWithDay()
+createAllTimeBlocks(timesArr)
+
+//add an event listener to the save button areas
+$('.saveBtn').click(event => {
+  saveCurrentTimeBlockContent(event)
+  console.log('save button pressed')
+})
+
+//set an interval to update the page
+
+setInterval(updateEverything,60000) //needs to be rare, it will clear any text that hasn't been saved
+//could fix later with a textarea.val() call in updateEverything?
+//meh
+// stable enough
