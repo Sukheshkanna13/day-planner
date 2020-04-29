@@ -81,7 +81,7 @@ createAllTimeBlocks(timesArr)
 
 const updateTimeBlockColor = (aTimeBlockBody) => {
 // if the timeblock has a past, present, or future class, remove it
-  aTimeBlockBody.removeClass("past present future")
+  aTimeBlockBody.removeClass("past present future") //I think this has no effect if the class isn't there. The code works so ¯\_( ツ )_/¯
   // console.log('removed classes')
 // if it is in the past now, add the past class
   if (aTimeBlockBody.data('start') < parseInt(ourMomentInstance.format('H'))){
