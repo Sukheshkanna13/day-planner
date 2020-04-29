@@ -38,10 +38,10 @@ for (let index in myArr){
   let mainBody = $('<div></div>')
 // give the mainbody a data attribute indicating what hour it starts at
   mainBody.data('start', timeStart)
-  console.log(`added data to block main body ${timeStart}: ${mainBody.data('start')}, type ${typeof (mainBody.data('start'))}`)
+  // console.log(`added data to block main body ${timeStart}: ${mainBody.data('start')}, type ${typeof (mainBody.data('start'))}`)
   mainBody.addClass('col-10 pl-0')
 // use updateTimeBlockColor to assign it a color
-  console.log(`updating color of block ${timeStart}`)
+  // console.log(`updating color of block ${timeStart}`)
   mainBody = updateTimeBlockColor(mainBody)
 // with a <textarea> to type in text
   mainBody.append($(`<textarea id = "text${timeStart}" class = "h-100 w-100 description" ></textarea>`))
@@ -51,18 +51,20 @@ for (let index in myArr){
   mySaveSpan.addClass("fas fa-save align-self-center ml-4")
   mySaveArea.append(mySaveSpan)
   mySaveArea.addClass('col-1 saveBtn d-flex h-100')
+  mySaveArea.attr('id',`save${timeStart}`)
 // append them to the timeBlock
   newTimeBlock.append(timeLabel)
   newTimeBlock.append(mainBody)
   newTimeBlock.append(mySaveArea)
 // append the new timeBlock to the container
   $('.container').append(newTimeBlock)
-}
-
-
-
-
-}
+// if there's already a value in localStorage for the textarea, set it to that
+  console.log(localStorage.getItem(`savedText${timeStart}`))
+  if (localStorage.getItem(`savedText${timeStart}`)) {
+    $(`#text${timeStart}`).text(localStorage.getItem(`savedText${timeStart}`))
+  }
+} //end of for loop
+} //end of function
 
 const updateEverything = () => {
 // this function will be placed inside a setInterval
@@ -71,12 +73,16 @@ updateHeaderWithDay()
 // update each timeblock, depending on whether it is now in the past, present, or future
 // use jQuery to get the list of timeblocks
 // use.map() to apply an updater function to each timeblock
+// would be a wonderful way to do this if I understood jQuery lists or jQuery .map()
+// but we're just gonna re-create all the timeblocks from scratch
+$('.container').html('')
+createAllTimeBlocks(timesArr)
 }
 
 const updateTimeBlockColor = (aTimeBlockBody) => {
 // if the timeblock has a past, present, or future class, remove it
   aTimeBlockBody.removeClass("past present future")
-  console.log('removed classes')
+  // console.log('removed classes')
 // if it is in the past now, add the past class
   if (aTimeBlockBody.data('start') < parseInt(ourMomentInstance.format('H'))){
     aTimeBlockBody.addClass("past")
@@ -93,13 +99,20 @@ const updateTimeBlockColor = (aTimeBlockBody) => {
   return aTimeBlockBody
 }
 
-const saveCurrentTimeBlockContent = () => {
+const saveCurrentTimeBlockContent = (anEvent) => {
+  // console.log("Saving current timeblock content...")
+  currentTimeBlock = anEvent.currentTarget.id.slice(4)
+  // console.log(currentTimeBlock)
 // save the value entered into the current timeblock's textarea in localStorage
-// add it to the current timeblock's <p> tag
-// clear the textarea
+  localStorage.setItem(`savedText${currentTimeBlock}`,$(`#text${currentTimeBlock}`).val())
 }
 
 //run some functions
 
 updateHeaderWithDay()
 createAllTimeBlocks(timesArr)
+
+//add an event listener to the save button areas
+$('.saveBtn').click(event => {
+  saveCurrentTimeBlockContent(event)
+})
