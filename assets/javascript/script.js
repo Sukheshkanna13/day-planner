@@ -24,8 +24,8 @@ const createAllTimeBlocks = (myArr) => {
 for (let index in myArr){
   let timeStart = myArr[index]
   console.log(`building timeBlock ${timeStart}`)
-// give each timeblock the row and timeblock classes
   let newTimeBlock = $('<div></div>')
+// give each timeblock the row and timeblock classes
   newTimeBlock.addClass("row timeblock")
 // create 3 cols in the time block
 // a col-1 for the time label
@@ -35,9 +35,13 @@ for (let index in myArr){
 // and a <p> tag containing the time, with P.M. or A.M. as appropriate
   timeLabel.append($(`<p>${convert24Hto12H(timeStart)[0]}${convert24Hto12H(timeStart)[1]? 'PM' : 'AM'}</p>`))
 // a col-10 for the main body of the timeblock
-// using updateTimeBlockColor to assign it a color
   let mainBody = $('<div></div>')
+// give the mainbody a data attribute indicating what hour it starts at
+  mainBody.data('start', timeStart)
+  console.log(`added data to block main body ${timeStart}: ${mainBody.data('start')}, type ${typeof (mainBody.data('start'))}`)
   mainBody.addClass('col-10')
+// use updateTimeBlockColor to assign it a color
+  console.log(`updating color of block ${timeStart}`)
   mainBody = updateTimeBlockColor(mainBody)
 // with a <p> tag for the description
   let myDesc = $('<p></p>')
@@ -74,14 +78,24 @@ updateHeaderWithDay()
 // use.map() to apply an updater function to each timeblock
 }
 
-const updateTimeBlockColor = (aTimeBlock) => {
+const updateTimeBlockColor = (aTimeBlockBody) => {
 // if the timeblock has a past, present, or future class, remove it
-aTimeBlock.removeClass("past present future")
+  aTimeBlockBody.removeClass("past present future")
+  console.log('removed classes')
 // if it is in the past now, add the past class
+  if (aTimeBlockBody.data('start') < parseInt(ourMomentInstance.format('H'))){
+    aTimeBlockBody.addClass("past")
+  }
 // if it is in the present now, add the present class
+  else if (aTimeBlockBody.data('start') == parseInt(ourMomentInstance.format('H'))){ //weak typing == is intentional here
+    aTimeBlockBody.addClass("present")
+  }
 // if it is in the future now, add the future class
+  else if (aTimeBlockBody.data('start') > parseInt(ourMomentInstance.format('H'))){
+    aTimeBlockBody.addClass("future")
+  }
 // return the timeblock
-return aTimeBlock
+  return aTimeBlockBody
 }
 
 const saveCurrentTimeBlockContent = () => {
