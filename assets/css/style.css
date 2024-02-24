@@ -74,30 +74,61 @@ textarea {
   font-size: 20px;
   transition: all .4s ease-in-out;
 }
-/* CSS for Chat UI */
-#chat-container {
-  width: 300px;
+
+
+/* Chatbox container styling */
+#chatbox-container {
   position: fixed;
   bottom: 20px;
   right: 20px;
+  width: 300px;
+  height: 200px;
+  background-color: #f2f2f2;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: #fff;
+  overflow: hidden;
+}
+
+/* Chatbox header styling */
+#chatbox-header {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Chatbox messages styling */
+#chatbox-messages {
+  height: 140px;
+  overflow-y: auto;
   padding: 10px;
 }
 
-#chat-log {
-  height: 200px;
-  overflow-y: scroll;
+/* User input styling */
+#user-input {
+  width: calc(100% - 20px);
+  border: none;
+  border-top: 1px solid #ccc;
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-radius: 0;
 }
 
+/* User message styling */
 .user-message {
+  background-color: #e2f2ff;
+  padding: 5px;
+  border-radius: 5px;
   margin-bottom: 5px;
 }
 
-.bot-message {
+/* AI response styling */
+.ai-message {
+  background-color: #fff;
+  padding: 5px;
+  border-radius: 5px;
   margin-bottom: 5px;
-  font-style: italic;
+  text-align: right;
 }
-
-

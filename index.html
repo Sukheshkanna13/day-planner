@@ -21,14 +21,18 @@
     <div class="container">
     </div>
 
-    <!-- Chat UI -->
-    <div id="chat-container">
-        <div id="chat-log"></div>
-        <input type="text" id="user-input" placeholder="Type your message here...">
-    </div>
-
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="./assets/javascript/script.js"></script>
+    
+    <!-- Chat box container -->
+    <div id="chatbox-container">
+        <div id="chatbox-header">AI Assistant</div>
+        <div id="chatbox-messages"></div>
+        <input type="text" id="user-input" placeholder="Type your message...">
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="chatbox.js"></script>
 </body>
 </html>
